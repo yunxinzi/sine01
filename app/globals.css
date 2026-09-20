@@ -1634,9 +1634,11 @@ select:focus-visible {
   .stage-actions,
   .deck-item-head,
   .modal-backdrop,
-  .export-render-host {
+  .deliver-grid,
+  .architecture-note {
     display: none !important;
   }
+
   body,
   .app-shell,
   .workspace,
@@ -1648,18 +1650,29 @@ select:focus-visible {
     max-width: none !important;
     width: 100% !important;
   }
-  .main-stage > section:not(:has(.deck-grid)) {
-    display: none !important;
+
+  .export-render-host {
+    display: block !important;
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    opacity: 1 !important;
   }
-  .deck-grid {
-    display: block;
-  }
-  .deck-item {
-    border: 0;
-    padding: 0;
-    margin: 0;
+
+  .export-render-slide {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
     break-after: page;
+    page-break-after: always;
   }
+
+  .export-render-slide:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
   .slide-canvas {
     border: 0;
     border-radius: 0;
