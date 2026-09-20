@@ -247,7 +247,7 @@ function miniSlide(style: Styleboard, kind: "cover" | "content" | "data", index:
 
   if (kind === "cover") {
     return (
-      <div className={"mini-slide motif-" + style.motif} style={rootStyle}>
+      <div className={"mini-slide motif-" + style.motif + " mini-variant-" + (index % 4)} style={rootStyle}>
         <div className="mini-kicker" style={{ color: style.accent }}>DESIGN STUDY / 0{index + 1}</div>
         <div className="mini-title">仿生冰面爬升<br />航行器设计</div>
         <div className="mini-rule" style={{ background: style.accent }} />
@@ -258,7 +258,7 @@ function miniSlide(style: Styleboard, kind: "cover" | "content" | "data", index:
 
   if (kind === "content") {
     return (
-      <div className={"mini-slide motif-" + style.motif} style={rootStyle}>
+      <div className={"mini-slide motif-" + style.motif + " mini-variant-" + (index % 4)} style={rootStyle}>
         <div className="mini-head">01 / 动作拆解</div>
         <div className="mini-columns">
           <div>
@@ -275,7 +275,7 @@ function miniSlide(style: Styleboard, kind: "cover" | "content" | "data", index:
   }
 
   return (
-    <div className={"mini-slide motif-" + style.motif} style={rootStyle}>
+    <div className={"mini-slide motif-" + style.motif + " mini-variant-" + (index % 4)} style={rootStyle}>
       <div className="mini-head">06 / 结构映射</div>
       <div className="mini-data">
         <div className="mini-donut" style={{ borderColor: style.accent }} />
@@ -390,14 +390,17 @@ function SlideVisual({
   style,
   slide,
   index,
-  variation
+  variation,
+  layoutId
 }: {
   style: Styleboard;
   slide: SlideCopy;
   index: number;
   variation: number;
+  layoutId: string;
 }) {
-  const mode = (index + variation) % 4;
+  const layoutOffset = Math.max(0, STYLEBOARDS.findIndex((item) => item.id === layoutId)) % 4;
+  const mode = (index + variation + layoutOffset) % 4;
   const root: CSSProperties = {
     background: style.bg,
     color: style.ink,
@@ -876,7 +879,7 @@ export default function Home() {
                     <span>LIVE DESIGN SPEC</span>
                     <b>{styleById(designSpec.baseStyle).name}</b>
                   </div>
-                  <SlideVisual style={finalStyle} slide={slides[Math.min(4, slides.length - 1)]} index={4} variation={variation} />
+                  <SlideVisual style={finalStyle} slide={slides[Math.min(4, slides.length - 1)]} index={4} variation={variation} layoutId={designSpec.layoutStyle} />
                   <div className="token-row">
                     {[finalStyle.bg, finalStyle.panel, finalStyle.ink, finalStyle.accent, finalStyle.accent2].map((c) => (
                       <span key={c} style={{ background: c, borderColor: finalStyle.border }} title={c} />
@@ -933,6 +936,7 @@ export default function Home() {
                         slide={slide}
                         index={index}
                         variation={variation + (slideVariation[index] || 0)}
+                        layoutId={designSpec.layoutStyle}
                       />
                     </div>
                   </article>
