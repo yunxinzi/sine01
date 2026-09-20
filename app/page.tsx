@@ -57,6 +57,7 @@ type PersistedState = {
   activeStep: StepId;
   generated: boolean;
   uploads: UploadMeta[];
+  slideOverrides: Record<number, Partial<SlideCopy>>;
 };
 
 const STORAGE_KEY = "sine01-v01-state";
@@ -514,10 +515,15 @@ export default function Home() {
   const [slideVariation, setSlideVariation] = useState<Record<number, number>>({});
   const [hydrated, setHydrated] = useState(false);
   const [exportingPng, setExportingPng] = useState(false);
+  const [slideOverrides, setSlideOverrides] = useState<Record<number, Partial<SlideCopy>>>({});
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const questions = useMemo(() => adaptiveQuestions(brief), [brief]);
-  const slides = useMemo(() => buildDemoSlides(brief, answers), [brief, answers]);
+  const autoSlides = useMemo(() => buildDemoSlides(brief, answers), [brief, answers]);
+  const slides = useMemo(
+    () => autoSlides.map((slide, index) => ({ ...slide, ...(slideOverrides[index] || {}) })),
+    [autoSlides, slideOverrides]
+  );
   const selectedStyle = styleById(selectedStyleId);
   const finalStyle = useMemo(() => {
     const palette = styleById(designSpec.paletteStyle);
@@ -551,6 +557,7 @@ export default function Home() {
         if (saved.activeStep) setActiveStep(saved.activeStep);
         if (saved.generated) setGenerated(saved.generated);
         if (saved.uploads) setUploads(saved.uploads);
+        if (saved.slideOverrides) setSlideOverrides(saved.slideOverrides);
       }
     } catch {
       // Ignore malformed local state and start clean.
@@ -569,10 +576,11 @@ export default function Home() {
       mode,
       activeStep,
       generated,
-      uploads
+      uploads,
+      slideOverrides
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  }, [brief, answers, selectedStyleId, designSpec, mode, activeStep, generated, uploads, hydrated]);
+  }, [brief, answers, selectedStyleId, designSpec, mode, activeStep, generated, uploads, slideOverrides, hydrated]);
 
   function loadSample() {
     setBrief(SAMPLE_BRIEF);
@@ -610,6 +618,7 @@ export default function Home() {
     setGenerated(false);
     setVariation(0);
     setSlideVariation({});
+    setSlideOverrides({});
   }
 
   function exportJson() {
@@ -892,8 +901,49 @@ export default function Home() {
                 </div>
               </div>
 
+              <div className="content-plan-panel">
+                <div className="content-plan-head">
+                  <div>
+                    <span className="eyebrow">CONTENT PLAN</span>
+                    <h2>先校对每一页“讲什么”，再生成视觉。</h2>
+                    <p>这是人工闸门：标题和摘要都可以改。修改只覆盖这一页，不会破坏原始 Brief。</p>
+                  </div>
+                  <button className="ghost-btn" onClick={() => setSlideOverrides({})}>恢复自动结构</button>
+                </div>
+                <div className="content-plan-grid">
+                  {slides.map((slide, index) => (
+                    <article className="plan-card" key={"plan-" + index}>
+                      <div className="plan-card-top">
+                        <span>{String(index + 1).padStart(2, "0")}</span>
+                        <b>{slide.type}</b>
+                      </div>
+                      <input
+                        value={slide.title}
+                        aria-label={"第 " + (index + 1) + " 页标题"}
+                        onChange={(e) =>
+                          setSlideOverrides((prev) => ({
+                            ...prev,
+                            [index]: { ...(prev[index] || {}), title: e.target.value }
+                          }))
+                        }
+                      />
+                      <textarea
+                        value={slide.body}
+                        aria-label={"第 " + (index + 1) + " 页摘要"}
+                        onChange={(e) =>
+                          setSlideOverrides((prev) => ({
+                            ...prev,
+                            [index]: { ...(prev[index] || {}), body: e.target.value }
+                          }))
+                        }
+                      />
+                    </article>
+                  ))}
+                </div>
+              </div>
+
               <div className="stage-actions">
-                <div><small>Design Spec 会成为后续 Generate / Rebuild / Evaluate 的唯一视觉输入。</small></div>
+                <div><small>Design Spec 与 Content Plan 一起锁定后，Generate 才开始制作整套视觉。</small></div>
                 <button className="primary-btn" disabled={!canGenerate} onClick={() => { setGenerated(true); go("generate"); }}>生成完整 {slides.length} 页预览</button>
               </div>
             </section>
@@ -961,14 +1011,14 @@ export default function Home() {
                   <span className="eyebrow">06 / DELIVER</span>
                   <h1>V0.1 先把“可验证的交付”做真实。</h1>
                 </div>
-                <p>现在可以导出项目 JSON、打包 10 页 PNG 视觉稿、使用浏览器打印为 PDF。Editable PPTX、Rebuild 和 Visual QA 明确放到 V1.0，不做假按钮。</p>
+                <p>现在可以导出项目 JSON、打包 {slides.length} 页 PNG 视觉稿、使用浏览器打印为 PDF。Editable PPTX、Rebuild 和 Visual QA 明确放到 V1.0，不做假按钮。</p>
               </div>
 
               <div className="deliver-grid">
                 <article className="deliver-card ready">
                   <span>READY</span>
                   <h3>Project JSON</h3>
-                  <p>保存 Brief、问答、Styleboard、Design Spec 与 10 页内容结构。</p>
+                  <p>保存 Brief、问答、Styleboard、Design Spec 与当前 {slides.length} 页内容结构。</p>
                   <button className="primary-btn" onClick={exportJson}>导出 JSON</button>
                 </article>
                 <article className="deliver-card ready">
