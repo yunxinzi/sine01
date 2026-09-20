@@ -1,6 +1,8 @@
 "use client";
 
-import { ChangeEvent, CSSProperties, useEffect, useMemo, useRef, useState } from "react";\nimport { toPng } from "html-to-image";\nimport JSZip from "jszip";
+import { ChangeEvent, CSSProperties, useEffect, useMemo, useRef, useState } from "react";
+import { toPng } from "html-to-image";
+import JSZip from "jszip";
 
 type StepId = "input" | "define" | "explore" | "select" | "generate" | "deliver";
 type Mode = "Fast" | "Balanced" | "Premium";
@@ -510,7 +512,9 @@ export default function Home() {
   const [generated, setGenerated] = useState(false);
   const [variation, setVariation] = useState(0);
   const [slideVariation, setSlideVariation] = useState<Record<number, number>>({});
-  const [hydrated, setHydrated] = useState(false);\n  const [exportingPng, setExportingPng] = useState(false);\n  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [hydrated, setHydrated] = useState(false);
+  const [exportingPng, setExportingPng] = useState(false);
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const questions = useMemo(() => adaptiveQuestions(brief), [brief]);
   const slides = useMemo(() => buildDemoSlides(brief, answers), [brief, answers]);
