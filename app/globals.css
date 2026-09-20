@@ -870,6 +870,95 @@ select:focus-visible {
   font-size: 10px;
 }
 
+.content-plan-panel {
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.7);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.content-plan-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+
+.content-plan-head h2 {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: -.035em;
+}
+
+.content-plan-head p {
+  margin: 6px 0 0;
+  color: #7a817d;
+  font-size: 10px;
+  line-height: 1.6;
+  max-width: 620px;
+}
+
+.content-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.plan-card {
+  border: 1px solid #e0e4e1;
+  background: #fbfcfb;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.plan-card-top {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 9px;
+}
+
+.plan-card-top span {
+  color: #8b918e;
+  font-size: 9px;
+}
+
+.plan-card-top b {
+  color: #53655f;
+  font-size: 9px;
+}
+
+.plan-card input,
+.plan-card textarea {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #1c201e;
+  padding: 0;
+}
+
+.plan-card input {
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 650;
+}
+
+.plan-card textarea {
+  margin-top: 8px;
+  min-height: 58px;
+  resize: vertical;
+  color: #747c77;
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.plan-card input:focus,
+.plan-card textarea:focus {
+  outline: 0;
+}
+
 .token-row {
   display: flex;
   gap: 6px;
@@ -1575,7 +1664,8 @@ select:focus-visible {
   }
   .stage-heading,
   .input-grid,
-  .spec-layout {
+  .spec-layout,
+  .content-plan-grid {
     grid-template-columns: 1fr;
   }
   .stage-heading {
@@ -1615,6 +1705,9 @@ select:focus-visible {
   }
   .question-no {
     margin-bottom: -2px;
+  }
+  .content-plan-head {
+    flex-direction: column;
   }
   .stage-actions {
     align-items: stretch;
