@@ -999,6 +999,26 @@ export default function Home() {
                 </article>
               </div>
 
+              <div className="export-render-host" aria-hidden="true">
+                {slides.map((slide, index) => (
+                  <div
+                    className="export-render-slide"
+                    key={"export-" + slide.title + index}
+                    ref={(node) => {
+                      slideRefs.current[index] = node;
+                    }}
+                  >
+                    <SlideVisual
+                      style={finalStyle}
+                      slide={slide}
+                      index={index}
+                      variation={variation + (slideVariation[index] || 0)}
+                      layoutId={designSpec.layoutStyle}
+                    />
+                  </div>
+                ))}
+              </div>
+
               <div className="architecture-note">
                 <span>WORKFLOW</span>
                 <b>Define · Explore · Select · Generate · Rebuild · Evaluate · Deliver</b>
