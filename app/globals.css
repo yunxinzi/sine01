@@ -662,6 +662,36 @@ select:focus-visible {
   letter-spacing: .08em;
 }
 
+.mini-variant-1 .mini-title {
+  margin-left: 17%;
+  text-align: right;
+  line-height: 1.16;
+}
+
+.mini-variant-1 .mini-rule {
+  margin-left: auto;
+  width: 42%;
+}
+
+.mini-variant-2 .mini-columns {
+  grid-template-columns: 1.25fr .75fr;
+}
+
+.mini-variant-2 .mini-visual {
+  height: 74%;
+  border-radius: 8px;
+}
+
+.mini-variant-3 .mini-data {
+  grid-template-columns: 1.3fr .7fr;
+}
+
+.mini-variant-3 .mini-donut {
+  width: 72%;
+  border-radius: 18%;
+  transform: rotate(8deg);
+}
+
 .mini-columns {
   display: grid;
   grid-template-columns: .8fr 1.2fr;
