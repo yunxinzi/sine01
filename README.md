@@ -10,8 +10,8 @@ Current interactive path:
 2. **Define** — adaptive questions only ask for missing high-impact constraints.
 3. **Explore** — browse 8 genuinely different Styleboards. Each one contains cover/content/data mini slides.
 4. **Select** — lock one design direction or mix layout, palette and imagery language.
-5. **Generate** — preview a coherent 10-slide deck and regenerate individual slides or the whole variant.
-6. **Deliver** — export project JSON or print the preview to PDF.
+5. **Generate** — derive a deck from the current brief, respect the requested page count, and regenerate individual slides or the whole variant.
+6. **Deliver** — export project JSON, render the approved deck to a PNG ZIP, or print the preview to PDF.
 
 V0.1 intentionally does **not** pretend that editable PPTX reconstruction or AI file parsing is already complete. Those are explicit next-stage capabilities.
 
@@ -41,7 +41,7 @@ npx tsc --noEmit
 npm run build
 ```
 
-A GitHub Actions workflow runs typecheck and build on `dev`, `main`, and pull requests to `main`.
+A GitHub Actions workflow runs a critical dependency audit, TypeScript check, and production build on `dev`, `main`, and pull requests to `main`. The app currently tracks the patched Next.js 15.5 maintenance line.
 
 ## Branches
 
