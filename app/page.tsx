@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, CSSProperties, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, CSSProperties, useEffect, useMemo, useRef, useState } from "react";\nimport { toPng } from "html-to-image";\nimport JSZip from "jszip";
 
 type StepId = "input" | "define" | "explore" | "select" | "generate" | "deliver";
 type Mode = "Fast" | "Balanced" | "Premium";
@@ -419,7 +419,7 @@ export default function Home() {
   const [generated, setGenerated] = useState(false);
   const [variation, setVariation] = useState(0);
   const [slideVariation, setSlideVariation] = useState<Record<number, number>>({});
-  const [hydrated, setHydrated] = useState(false);
+  const [hydrated, setHydrated] = useState(false);\n  const [exportingPng, setExportingPng] = useState(false);\n  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const questions = useMemo(() => adaptiveQuestions(brief), [brief]);
   const selectedStyle = styleById(selectedStyleId);
@@ -534,6 +534,35 @@ export default function Home() {
     a.download = "sine01-project.json";
     a.click();
     URL.revokeObjectURL(url);
+  }
+
+  async function exportPngZip() {
+    if (!generated) return;
+    setExportingPng(true);
+    try {
+      const zip = new JSZip();
+      for (let index = 0; index < SLIDE_COPY.length; index += 1) {
+        const wrap = slideRefs.current[index];
+        const canvas = wrap?.querySelector(".slide-canvas") as HTMLElement | null;
+        if (!canvas) continue;
+        const dataUrl = await toPng(canvas, {
+          pixelRatio: 2,
+          cacheBust: true,
+          backgroundColor: finalStyle.bg
+        });
+        const base64 = dataUrl.split(",")[1];
+        zip.file("slide-" + String(index + 1).padStart(2, "0") + ".png", base64, { base64: true });
+      }
+      const blob = await zip.generateAsync({ type: "blob" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "sine01-visual-deck.zip";
+      a.click();
+      URL.revokeObjectURL(url);
+    } finally {
+      setExportingPng(false);
+    }
   }
 
   function go(step: StepId) {
@@ -804,12 +833,19 @@ export default function Home() {
                         单页变体
                       </button>
                     </div>
-                    <SlideVisual
-                      style={finalStyle}
-                      slide={slide}
-                      index={index}
-                      variation={variation + (slideVariation[index] || 0)}
-                    />
+                    <div
+                      className="capture-wrap"
+                      ref={(node) => {
+                        slideRefs.current[index] = node;
+                      }}
+                    >
+                      <SlideVisual
+                        style={finalStyle}
+                        slide={slide}
+                        index={index}
+                        variation={variation + (slideVariation[index] || 0)}
+                      />
+                    </div>
                   </article>
                 ))}
               </div>
@@ -828,7 +864,7 @@ export default function Home() {
                   <span className="eyebrow">06 / DELIVER</span>
                   <h1>V0.1 先把“可验证的交付”做真实。</h1>
                 </div>
-                <p>现在可以导出项目 JSON、使用浏览器打印为 PDF。Editable PPTX、Rebuild 和 Visual QA 明确放到 V1.0，不做假按钮。</p>
+                <p>现在可以导出项目 JSON、打包 10 页 PNG 视觉稿、使用浏览器打印为 PDF。Editable PPTX、Rebuild 和 Visual QA 明确放到 V1.0，不做假按钮。</p>
               </div>
 
               <div className="deliver-grid">
@@ -837,6 +873,14 @@ export default function Home() {
                   <h3>Project JSON</h3>
                   <p>保存 Brief、问答、Styleboard、Design Spec 与 10 页内容结构。</p>
                   <button className="primary-btn" onClick={exportJson}>导出 JSON</button>
+                </article>
+                <article className="deliver-card ready">
+                  <span>READY</span>
+                  <h3>PNG Deck ZIP</h3>
+                  <p>将已经批准的 10 页视觉稿按 2× 像素密度渲染为 PNG，并一次性打包下载。</p>
+                  <button className="primary-btn" disabled={!generated || exportingPng} onClick={exportPngZip}>
+                    {exportingPng ? "正在渲染…" : "导出 10 页 PNG"}
+                  </button>
                 </article>
                 <article className="deliver-card ready">
                   <span>READY</span>
