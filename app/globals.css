@@ -1358,6 +1358,19 @@ select:focus-visible {
   color: #7a827e;
 }
 
+.export-render-host {
+  position: fixed;
+  left: -20000px;
+  top: 0;
+  width: 1280px;
+  pointer-events: none;
+  opacity: 1;
+}
+
+.export-render-slide {
+  width: 1280px;
+}
+
 .architecture-note {
   margin-top: 12px;
   padding: 22px;
@@ -1620,7 +1633,8 @@ select:focus-visible {
   .deck-toolbar,
   .stage-actions,
   .deck-item-head,
-  .modal-backdrop {
+  .modal-backdrop,
+  .export-render-host {
     display: none !important;
   }
   body,
