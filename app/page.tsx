@@ -40,6 +40,12 @@ type DesignSpec = {
   imageryStyle: string;
 };
 
+type SlideCopy = {
+  type: string;
+  title: string;
+  body: string;
+};
+
 type PersistedState = {
   brief: string;
   answers: Record<string, string>;
@@ -285,7 +291,7 @@ function miniSlide(style: Styleboard, kind: "cover" | "content" | "data", index:
   );
 }
 
-const SLIDE_COPY = [
+const SAMPLE_SLIDES: SlideCopy[] = [
   { type: "封面", title: "威德尔海豹仿生冰面爬升航行器设计", body: "从极地动物上冰行为提取可工程映射的爬升机制" },
   { type: "问题", title: "冰水界面，是整个任务链最不稳定的一段", body: "低摩擦、湿滑边缘与姿态突变，使传统轮式或单一推进方式难以稳定完成越界。" },
   { type: "依据", title: "为什么选择威德尔海豹作为仿生对象", body: "其上冰过程同时包含柔顺躯干、前部支撑、后部推进与连续重心迁移，具备明确的工程映射价值。" },
@@ -298,6 +304,88 @@ const SLIDE_COPY = [
   { type: "结论", title: "把动物的连续动作，变成机器的可控状态", body: "下一阶段进入机构参数化、样机尺寸约束与冰水界面实验设计。" }
 ];
 
+const GENERIC_SECTIONS: Omit<SlideCopy, "title">[] = [
+  { type: "背景", body: "从输入材料中提炼背景、现状与需要解决的核心矛盾。" },
+  { type: "问题", body: "把宽泛主题收敛为少数几个需要回答的关键问题。" },
+  { type: "目标", body: "明确这套汇报希望观众最终理解、相信或记住什么。" },
+  { type: "洞察", body: "将原始材料整理成有层级的核心信息，而不是简单堆砌文本。" },
+  { type: "结构", body: "建立内容之间的逻辑关系，让每一页只承担一个主要表达任务。" },
+  { type: "证据", body: "集中放置最能支撑观点的数据、案例、文献或事实材料。" },
+  { type: "方案", body: "把关键方法、机制或解决思路组织成可视化模块。" },
+  { type: "细节", body: "补充实现路径、组成部分、参数或操作要点。" },
+  { type: "比较", body: "通过对照呈现差异、取舍和方案边界。" },
+  { type: "数据", body: "把高价值数字转成图表或结构化指标，减少大段说明文字。" },
+  { type: "案例", body: "用一个具体例子帮助观众把抽象结论落到真实情境。" },
+  { type: "流程", body: "呈现任务如何推进、各环节如何衔接以及关键控制点。" },
+  { type: "风险", body: "说明限制条件、风险来源与当前尚未解决的问题。" },
+  { type: "验证", body: "说明如何证明方案有效，以及下一步需要获得哪些证据。" },
+  { type: "价值", body: "集中呈现方案产生的学术、工程、业务或传播价值。" },
+  { type: "计划", body: "将后续工作拆成清晰阶段，并标记近期最重要的里程碑。" },
+  { type: "总结", body: "回收前文结论，保留三条以内最值得记住的信息。" },
+  { type: "结束", body: "用一句清晰的结束语收束整套叙事，并为问答留出空间。" }
+];
+
+function resolvePageCount(brief: string, answers: Record<string, string>) {
+  const explicit = brief.match(/(\d{1,2})\s*页/);
+  if (explicit) return Math.min(20, Math.max(6, Number(explicit[1])));
+  const choice = answers.pages;
+  if (choice === "6–8 页") return 8;
+  if (choice === "9–12 页") return 10;
+  if (choice === "13–18 页") return 14;
+  if (choice === "20 页以上") return 20;
+  return 10;
+}
+
+function briefTitle(brief: string) {
+  const line = brief
+    .split(/\n+/)
+    .map((x) => x.trim())
+    .find(Boolean) || "未命名演示项目";
+  return line.replace(/^(主题|题目|标题)[:：]\s*/, "").slice(0, 48);
+}
+
+function buildDemoSlides(brief: string, answers: Record<string, string>): SlideCopy[] {
+  const count = resolvePageCount(brief, answers);
+  if (/威德尔海豹/.test(brief) && count === 10) return SAMPLE_SLIDES;
+
+  const title = briefTitle(brief);
+  const summary = brief.replace(/\s+/g, " ").trim().slice(0, 120);
+  const middleNeeded = Math.max(4, count - 2);
+  const middle = GENERIC_SECTIONS.slice(0, middleNeeded).map((section, index) => ({
+    type: section.type,
+    title:
+      index === 0 ? "为什么现在需要讨论这个问题" :
+      index === 1 ? "把主题收敛为可回答的核心问题" :
+      index === 2 ? "这套汇报需要达成什么目标" :
+      index === 3 ? "从原始材料中提炼出的关键信息" :
+      section.type + " / " + title,
+    body: index === 0 && summary ? summary : section.body
+  }));
+
+  while (middle.length < middleNeeded) {
+    const section = GENERIC_SECTIONS[middle.length % GENERIC_SECTIONS.length];
+    middle.push({
+      type: section.type,
+      title: section.type + " / " + title,
+      body: section.body
+    });
+  }
+
+  return [
+    {
+      type: "封面",
+      title,
+      body: "Sine01 V0.1 根据当前 Brief 与设计约束生成的视觉优先演示结构。"
+    },
+    ...middle,
+    {
+      type: "结论",
+      title: "收束核心结论，并明确下一步",
+      body: "回收前文最重要的信息，同时保留后续验证、行动或讨论入口。"
+    }
+  ].slice(0, count);
+}
+
 function SlideVisual({
   style,
   slide,
@@ -305,7 +393,7 @@ function SlideVisual({
   variation
 }: {
   style: Styleboard;
-  slide: (typeof SLIDE_COPY)[number];
+  slide: SlideCopy;
   index: number;
   variation: number;
 }) {
@@ -422,6 +510,7 @@ export default function Home() {
   const [hydrated, setHydrated] = useState(false);\n  const [exportingPng, setExportingPng] = useState(false);\n  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const questions = useMemo(() => adaptiveQuestions(brief), [brief]);
+  const slides = useMemo(() => buildDemoSlides(brief, answers), [brief, answers]);
   const selectedStyle = styleById(selectedStyleId);
   const finalStyle = useMemo(() => {
     const palette = styleById(designSpec.paletteStyle);
@@ -525,7 +614,7 @@ export default function Home() {
       generationMode: mode,
       designSpec,
       style: finalStyle,
-      slides: SLIDE_COPY
+      slides
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -541,7 +630,7 @@ export default function Home() {
     setExportingPng(true);
     try {
       const zip = new JSZip();
-      for (let index = 0; index < SLIDE_COPY.length; index += 1) {
+      for (let index = 0; index < slides.length; index += 1) {
         const wrap = slideRefs.current[index];
         const canvas = wrap?.querySelector(".slide-canvas") as HTMLElement | null;
         if (!canvas) continue;
@@ -787,7 +876,7 @@ export default function Home() {
                     <span>LIVE DESIGN SPEC</span>
                     <b>{styleById(designSpec.baseStyle).name}</b>
                   </div>
-                  <SlideVisual style={finalStyle} slide={SLIDE_COPY[4]} index={4} variation={variation} />
+                  <SlideVisual style={finalStyle} slide={slides[Math.min(4, slides.length - 1)]} index={4} variation={variation} />
                   <div className="token-row">
                     {[finalStyle.bg, finalStyle.panel, finalStyle.ink, finalStyle.accent, finalStyle.accent2].map((c) => (
                       <span key={c} style={{ background: c, borderColor: finalStyle.border }} title={c} />
@@ -798,7 +887,7 @@ export default function Home() {
 
               <div className="stage-actions">
                 <div><small>Design Spec 会成为后续 Generate / Rebuild / Evaluate 的唯一视觉输入。</small></div>
-                <button className="primary-btn" disabled={!canGenerate} onClick={() => { setGenerated(true); go("generate"); }}>生成完整 10 页预览</button>
+                <button className="primary-btn" disabled={!canGenerate} onClick={() => { setGenerated(true); go("generate"); }}>生成完整 {slides.length} 页预览</button>
               </div>
             </section>
           )}
@@ -815,14 +904,14 @@ export default function Home() {
 
               <div className="deck-toolbar">
                 <div>
-                  <span className="live-dot" /> 10 slides generated
+                  <span className="live-dot" /> {slides.length} slides generated
                   <small> · {finalStyle.name} · {mode}</small>
                 </div>
                 <button className="ghost-btn" onClick={() => setVariation((v) => v + 1)}>重新生成整套变体</button>
               </div>
 
               <div className="deck-grid">
-                {SLIDE_COPY.map((slide, index) => (
+                {slides.map((slide, index) => (
                   <article className="deck-item" key={slide.title}>
                     <div className="deck-item-head">
                       <div><span>{String(index + 1).padStart(2, "0")}</span><b>{slide.type}</b></div>
@@ -877,9 +966,9 @@ export default function Home() {
                 <article className="deliver-card ready">
                   <span>READY</span>
                   <h3>PNG Deck ZIP</h3>
-                  <p>将已经批准的 10 页视觉稿按 2× 像素密度渲染为 PNG，并一次性打包下载。</p>
+                  <p>将已经批准的 {slides.length} 页视觉稿按 2× 像素密度渲染为 PNG，并一次性打包下载。</p>
                   <button className="primary-btn" disabled={!generated || exportingPng} onClick={exportPngZip}>
-                    {exportingPng ? "正在渲染…" : "导出 10 页 PNG"}
+                    {exportingPng ? "正在渲染…" : "导出 " + slides.length + " 页 PNG"}
                   </button>
                 </article>
                 <article className="deliver-card ready">
@@ -932,7 +1021,7 @@ export default function Home() {
           </section>
           <section>
             <span>GENERATION</span>
-            <b>{generated ? "10 / 10 previewed" : "Not generated"}</b>
+            <b>{generated ? slides.length + " / " + slides.length + " previewed" : "Not generated"}</b>
             <small>Mode: {mode}</small>
           </section>
           <section>
