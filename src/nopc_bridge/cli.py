@@ -14,6 +14,7 @@ from .external import audit_for,audit_inp,run_ccx,run_radioss,ExternalSolverErro
 from .verify import verify,VerificationError
 from .jobs import preflight,execute_job
 from .inp3d import solve_inp
+from .ccx_bar import run_benchmark
 
 
 def doctor():
@@ -79,6 +80,7 @@ def main(argv=None):
         p=sub.add_parser(n);p.add_argument('file')
     p=sub.add_parser('run');p.add_argument('case');p.add_argument('--out',required=True);p.add_argument('--mode',choices=['quick','research','engineering'],default='quick')
     p=sub.add_parser('run-ccx');p.add_argument('file');p.add_argument('--out',required=True);p.add_argument('--exe');p.add_argument('--timeout',type=int,default=120);p.add_argument('--threads',type=int,default=2)
+    p=sub.add_parser('ccx-bar');p.add_argument('--out',required=True);p.add_argument('--exe');p.add_argument('--timeout',type=int,default=120);p.add_argument('--threads',type=int,default=2)
     p=sub.add_parser('run-radioss');p.add_argument('starter_input');p.add_argument('engine_input');p.add_argument('--out',required=True);p.add_argument('--root');p.add_argument('--starter');p.add_argument('--engine');p.add_argument('--timeout',type=int,default=120);p.add_argument('--threads',type=int,default=2)
     p=sub.add_parser('bundle');p.add_argument('job_dir');p.add_argument('--out',required=True)
     p=sub.add_parser('solve-inp');p.add_argument('file');p.add_argument('--units',required=True);p.add_argument('--out',required=True)
@@ -92,6 +94,7 @@ def main(argv=None):
         elif opts.command=='audit-for':data=audit_for(opts.file)
         elif opts.command=='run':data=run_native(opts.case,opts.out,opts.mode)
         elif opts.command=='run-ccx':data=run_ccx(opts.file,opts.out,opts.exe,opts.timeout,opts.threads)
+        elif opts.command=='ccx-bar':data=run_benchmark(opts.out,opts.exe,opts.timeout,opts.threads)
         elif opts.command=='run-radioss':data=run_radioss(opts.starter_input,opts.engine_input,opts.out,opts.root,opts.starter,opts.engine,opts.timeout,opts.threads)
         elif opts.command=='solve-inp':data=solve_inp(opts.file,opts.out,opts.units)
         elif opts.command=='preflight':data=preflight(json.loads(Path(opts.case).read_text(encoding='utf-8')))
