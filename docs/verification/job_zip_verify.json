@@ -1,0 +1,28 @@
+{
+  "archive_sha256": "bc61b194e26e9134cb80cb0d93de4ad3b4ed6d6c278cbab25d987f38694cae49",
+  "status": "verified_completed_job",
+  "kind": "job",
+  "attempts": [
+    {
+      "number": 1,
+      "status": "completed",
+      "start_utc": "2026-10-09T07:20:19.759694+00:00",
+      "output": "attempts/attempt_001",
+      "end_utc": "2026-10-09T07:20:20.497190+00:00",
+      "verification_status": "verified_artifact_and_limited_numerical_consistency"
+    }
+  ],
+  "result": {
+    "status": "verified_artifact_and_limited_numerical_consistency",
+    "kind": "native",
+    "files_checked": 7,
+    "numerics": {
+      "nodes": 45,
+      "elements": 96,
+      "max_vm_pa": 9999.999999999987,
+      "mean_tip_ux_m": 1.4285714285714155e-07,
+      "method": "stored fields vs constitutive law + limited analytic/summary gates"
+    },
+    "scope": "Not an experimental validation, not industrial certification"
+  }
+}

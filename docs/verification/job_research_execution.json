@@ -1,0 +1,76 @@
+{
+  "status": "completed_verified_limited",
+  "job": "/mnt/data/NoPC_CAE_Cloud_Bridge_v0.2/runs/job_research",
+  "attempt": 1,
+  "latest_output": "attempts/attempt_001",
+  "result": {
+    "status": "computed_not_experimentally_validated",
+    "method": "small-strain isotropic linear FEM, C3D4 tetrahedron",
+    "nodes": 45,
+    "elements": 96,
+    "dofs": 135,
+    "max_end_ux_m": 1.4285714285714176e-07,
+    "mean_end_ux_m": 1.4285714285714155e-07,
+    "max_von_mises_pa": 9999.999999999987,
+    "reaction_x_n": -99.99999999999994,
+    "applied_force_x_n": 100.0,
+    "strain_energy_j": 7.142857142856993e-06,
+    "external_work_j": 1.4285714285714158e-05,
+    "free_dof_residual_rel": 4.1893325992962123e-14,
+    "force_balance_rel": 5.684341886080802e-16,
+    "energy_balance_rel": 1.2095630486791516e-14,
+    "volume_m3": 0.010000000000000009,
+    "loaded_area_m2": 0.010000000000000002,
+    "unit_system": "SI: m,N,Pa,J",
+    "scope": "prismatic 3D bar, linear elastic static only",
+    "analytical_end_ux_m": 1.4285714285714285e-07,
+    "analytic_relative_error": 9.079134403382032e-15,
+    "mesh_study": {
+      "mesh_levels": [
+        {
+          "subdivisions": {
+            "nx": 4,
+            "ny": 2,
+            "nz": 2
+          },
+          "n_tets": 96,
+          "mean_end_ux_m": 1.4285714285714155e-07
+        },
+        {
+          "subdivisions": {
+            "nx": 8,
+            "ny": 4,
+            "nz": 4
+          },
+          "n_tets": 768,
+          "mean_end_ux_m": 1.4285714285713657e-07
+        },
+        {
+          "subdivisions": {
+            "nx": 12,
+            "ny": 6,
+            "nz": 6
+          },
+          "n_tets": 2592,
+          "mean_end_ux_m": 1.4285714285713837e-07
+        }
+      ],
+      "displacement_relative_span": 3.4834229955834193e-14,
+      "interpretation": "uniform patch field only; not singularity/error estimator or experimental validation"
+    },
+    "requested_quality_mode": "research"
+  },
+  "verification": {
+    "status": "verified_artifact_and_limited_numerical_consistency",
+    "kind": "native",
+    "files_checked": 7,
+    "numerics": {
+      "nodes": 45,
+      "elements": 96,
+      "max_vm_pa": 9999.999999999987,
+      "mean_tip_ux_m": 1.4285714285714155e-07,
+      "method": "stored fields vs constitutive law + limited analytic/summary gates"
+    },
+    "scope": "Not an experimental validation, not industrial certification"
+  }
+}

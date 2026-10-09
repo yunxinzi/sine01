@@ -1,0 +1,14 @@
+{
+  "archive_sha256": "b8dc938a616d0cd89cd422b33d65e5b5a9d077e01655b700460e2887dd1a9540",
+  "status": "verified_artifact_and_limited_numerical_consistency",
+  "kind": "native",
+  "files_checked": 8,
+  "numerics": {
+    "nodes": 4,
+    "elements": 1,
+    "max_vm_pa": 342.85714285714283,
+    "max_displacement_m": 0.006367346938775511,
+    "method": "recompute material stress, internal forces, residual and energy (not experimental validation)"
+  },
+  "scope": "Not an experimental validation, not industrial certification"
+}

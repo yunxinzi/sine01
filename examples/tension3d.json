@@ -1,0 +1,9 @@
+{
+  "case_id": "tension_3d_patch",
+  "analysis": "linear_elastic_static_3d_bar",
+  "geometry": {"length_m": 1.0, "width_m": 0.1, "height_m": 0.1},
+  "mesh": {"nx": 4, "ny": 2, "nz": 2},
+  "material": {"young_pa": 70000000000.0, "poisson": 0.0},
+  "load_x_n": 100.0,
+  "notes": "Illustrative synthetic material. Boundary x=0 clamped, x=L uniform traction. Not real composite impact."
+}

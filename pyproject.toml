@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nopc-cae-cloud-bridge"
+version = "0.2.0"
+description = "Cloud-agent orchestration and verified baseline FEM for no-PC numerical simulation"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = ["numpy>=1.23", "scipy>=1.9"]
+
+[project.optional-dependencies]
+viz = ["matplotlib>=3.5"]
+test = ["pytest>=7", "matplotlib>=3.5"]
+
+[project.scripts]
+nopc-bridge = "nopc_bridge.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

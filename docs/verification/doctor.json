@@ -1,0 +1,11 @@
+{
+  "version": "0.2.0",
+  "python": "3.13.5",
+  "numpy": true,
+  "scipy": true,
+  "nopc_cae_v02_installed": false,
+  "calculix": null,
+  "openradioss_starter": null,
+  "openradioss_engine": null,
+  "cloud_note": "diagnostics for THIS environment only, not Codex Cloud"
+}

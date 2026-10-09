@@ -1,0 +1,27 @@
+{
+  "status": "computed_not_experimentally_validated",
+  "method": "strict imported Abaqus/CalculiX-style INP C3D4 isotropic linear statics",
+  "scope": "C3D4 small-strain, single linear isotropic material, nodal CLOAD, zero BC only",
+  "nodes": 4,
+  "elements": 1,
+  "dofs": 12,
+  "max_displacement_m": 0.006367346938775511,
+  "max_von_mises_pa": 342.85714285714283,
+  "applied_force_xyz_n": [
+    0.0,
+    0.0,
+    -100.0
+  ],
+  "support_reaction_xyz_n": [
+    0.0,
+    0.0,
+    100.0
+  ],
+  "strain_energy_j": 0.31836734693877555,
+  "external_work_j": 0.6367346938775511,
+  "force_balance_rel": 0.0,
+  "free_dof_residual_rel": 0.0,
+  "energy_balance_rel": 0.0,
+  "unit_system": "SI: m,N,Pa,J",
+  "requested_quality_mode": "strict_inp"
+}
