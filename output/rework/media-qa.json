@@ -1,0 +1,61 @@
+{
+  "status": "passed",
+  "video": {
+    "codec_name": "h264",
+    "width": 1920,
+    "height": 1080,
+    "r_frame_rate": "30/1",
+    "duration": "8.000000",
+    "nb_read_frames": "240",
+    "side_data_list": [
+      {}
+    ]
+  },
+  "containerDurationSeconds": 8.0,
+  "allVideoFramesDecoded": 240,
+  "blackIntervals": [],
+  "audioSourceStartSeconds": 27.866666666666667,
+  "audioSourceLagSeconds": 0.0250625,
+  "audioCorrelation": 0.9992031563720412,
+  "lyricGlyphsMissing": [],
+  "allFrameGeometryErrors": 0,
+  "entryOvershootWarningsReviewed": 30,
+  "unresolvedSettledGlyphCropping": [],
+  "reviewedSecondFrames": [
+    0,
+    30,
+    60,
+    90,
+    120,
+    150,
+    180,
+    210,
+    239
+  ],
+  "reviewedTransitionFrames": [
+    45,
+    46,
+    51,
+    56,
+    64,
+    65,
+    67,
+    110,
+    111,
+    115,
+    120,
+    128,
+    129,
+    133,
+    146,
+    158,
+    167,
+    168,
+    173,
+    195,
+    196,
+    206,
+    215
+  ],
+  "artReviewLimit": "Artistic approval is a design judgment, not established by these technical checks. Source lyric timestamps and measured transients were used; no human word-by-word audio listening or ASR alignment is claimed."
+}
