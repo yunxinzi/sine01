@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0",
+  "project_id": "example-deck",
+  "build_id": "draft-001",
+  "mode": "editable",
+  "stage": "brief",
+  "brief": {
+    "topic": "样例：低剧透电影推荐",
+    "audience": "课堂同学",
+    "language": "zh-CN",
+    "aspect_ratio": "16:9",
+    "slide_count": 2,
+    "animation_requested": true,
+    "target_app": "PowerPoint / WPS (未验证)"
+  },
+  "styleboards": [],
+  "selected_style_id": null,
+  "gates": {
+    "brief_ready": true,
+    "style_selected": false,
+    "artwork_approved": false
+  },
+  "design_spec": {
+    "fonts": [],
+    "palette": [],
+    "reference_locked": false
+  },
+  "slides": [
+    {
+      "id": "slide-01",
+      "intent": "引入主题",
+      "headline": "电影推荐",
+      "reference_image": null,
+      "rendered_image": null,
+      "status": "planned",
+      "elements": [
+        {
+          "id": "title",
+          "kind": "native_text",
+          "source": null,
+          "bbox": [
+            0.8,
+            0.8,
+            7.5,
+            1.3
+          ],
+          "editable": true,
+          "layer": 10,
+          "animation": {
+            "status": "planned",
+            "effect": "fade-in",
+            "duration_s": 0.5,
+            "trigger": "on-click"
+          }
+        }
+      ],
+      "qa": {
+        "static": "not_tested",
+        "edit": "not_tested",
+        "animation": "not_tested",
+        "target_playback": "not_tested"
+      }
+    },
+    {
+      "id": "slide-02",
+      "intent": "介绍设定",
+      "headline": "关于相遇与距离",
+      "reference_image": null,
+      "rendered_image": null,
+      "status": "planned",
+      "elements": [
+        {
+          "id": "body",
+          "kind": "native_text",
+          "source": null,
+          "bbox": [
+            1,
+            1,
+            9,
+            2
+          ],
+          "editable": true,
+          "layer": 10,
+          "animation": null
+        }
+      ],
+      "qa": {
+        "static": "not_tested",
+        "edit": "not_tested",
+        "animation": "not_tested",
+        "target_playback": "not_tested"
+      }
+    }
+  ],
+  "artifacts": {
+    "pptx": null,
+    "pdf": null,
+    "preview_dir": null,
+    "qa_report": null
+  },
+  "checkpoint": {
+    "last_saved_at": null,
+    "verified_files": [],
+    "next_action": "制作至少8套实际可见风格样板"
+  },
+  "notes": [
+    "此文件仅是工程状态结构示例，不表示已经生成或用户确认任何图片"
+  ]
+}
